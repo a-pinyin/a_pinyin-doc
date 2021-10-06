@@ -1,0 +1,19 @@
+{
+  "name": "a_pinyin_test",
+  "version": "0.1.0",
+  "private": true,
+  "description": "test only",
+  "author": "sceext",
+  "scripts": {
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "test": "npm run fmt:check"
+  },
+  "devDependencies": {
+    "prettier": "^2.4.1"
+  },
+  "engines": {
+    "node": ">=16.0",
+    "npm": ">=7.0"
+  }
+}
