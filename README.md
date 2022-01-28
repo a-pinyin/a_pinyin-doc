@@ -61,9 +61,9 @@ TODO **注意**: 目前本项目还在早期阶段, 下述只是计划.
 | 仓库            | 说明                                | 编程语言/框架                 | LICENSE      |
 | :-------------- | :---------------------------------- | :---------------------------- | :----------- |
 | a_pinyin        | (本仓库) 主要文档                   | markdown                      | CC-BY-SA 4.0 |
-| a_pinyin-server | 后端 (含 c1 核心 libapinyin), apy   | rust, WASM (wasmer)           | LGPLv3       |
+| a_pinyin-server | 后端等模块, apy                     | rust, WASM (wasmer)           | GPLv3        |
 | a_pinyin-apk    | 基于 flutter 的界面 (前端, Android) | dart, flutter, wasmer, kotlin | GPLv3        |
-| a_pinyin-ui     | 基于 web 的界面 (前端, Windows)     | TypeScript, deno              | GPLv3        |
+| a_pinyin-ui     | 基于 web 的界面 (前端, Windows)     | TypeScript, rust, tauri       | GPLv3        |
 | a_pinyin-ibus   | 适配 ibus (前端, Linux)             | ?                             | GPLv3        |
 | a_pinyin-data   | c1 核心的内置数据及数据处理工具     | rust, sqlite                  | CC-BY-SA 4.0 |
 | a_pinyin-c2     | c2 核心                             | ?                             | ?            |
