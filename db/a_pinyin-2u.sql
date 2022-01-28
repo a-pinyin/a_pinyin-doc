@@ -38,20 +38,113 @@ CREATE TABLE a_pinyin_元数据 (  -- A拼音 2.0 数据库元数据
   PRIMARY KEY (类型, 名称, 值)
 );
 
--- TODO 当前时间
 INSERT INTO a_pinyin_元数据(类型, 名称, 值, 描述, 备注) VALUES
   ("表", "a_pinyin", NULL, "A拼音 元数据, 与 1.x 本版兼容", NULL),
   ("表", "a_pinyin_元数据", NULL, "A拼音 2.0 数据库元数据", NULL),
-  -- TODO
+  ("表", "用户_配置", NULL, "保存设置表", NULL),
+  ("表", "用户_字符", NULL, "对应 固定_字符", NULL),
+  ("表", "用户_拼音", NULL, "对应 基础_拼音", NULL),
+  ("表", "用户_汉字", NULL, "对应 基础_汉字", NULL),
+  ("表", "用户_c1_双拼", NULL, "对应 c1_双拼", NULL),
+  ("表", "用户_c1_拼音切分", NULL, "记录拼音切分选择结果", NULL),
+  ("表", "用户_c1_词典", NULL, "用户输入 1 元词典", NULL),
+  ("表", "用户_c1_词典2", NULL, "用户输入 2 元词典", NULL),
+
   ("枚举", "a_pinyin_元数据.类型", "表", "对数据库中每张表的描述", NULL),
   ("枚举", "a_pinyin_元数据.类型", "枚举", "对某表某列枚举值的描述", NULL);
--- TODO
+
+-- TODO create INDEX
 
 
--- TODO
+CREATE TABLE 用户_配置 (
+  键 TEXT NOT NULL,
+  值 TEXT,
+  说明 TEXT,
+  备注 TEXT,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (键)
+);
+
+
+CREATE TABLE 用户_字符 (
+  类型 TEXT NOT NULL,
+  文本 TEXT NOT NULL,
+  次数 INT NOT NULL DEFAULT 0,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (类型, 文本)
+);
+
+
+CREATE TABLE 用户_拼音 (
+  类型 TEXT NOT NULL,
+  文本 TEXT NOT NULL,
+  次数 INT NOT NULL DEFAULT 0,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (文本)
+);
+
+
+CREATE TABLE 用户_c1_双拼 (
+  名称 TEXT NOT NULL,
+  双拼 TEXT NOT NULL,
+  pin_yin TEXT NOT NULL,
+  次数 INT NOT NULL DEFAULT 0,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (名称, 双拼, pin_yin)
+);
+
+
+CREATE TABLE 用户_汉字 (
+  全拼 TEXT NOT NULL,
+  声母 TEXT NOT NULL,
+  汉字 TEXT NOT NULL,
+  声调 INT NOT NULL DEFAULT 0,
+  次数 INT NOT NULL DEFAULT 0,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (全拼, 汉字, 声调)
+);
+
+
+CREATE TABLE 用户_c1_拼音切分 (
+  模式 TEXT NOT NULL,
+  原始 TEXT NOT NULL,
+  pin_yin TEXT NOT NULL,
+  次数 INT NOT NULL DEFAULT 0,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (模式, 原始, pin_yin)
+);
+
+
+CREATE TABLE 用户_c1_词典 (
+  pin_yin TEXT NOT NULL,
+  声调 TEXT,
+  文本 TEXT NOT NULL,
+  次数 INT NOT NULL DEFAULT 0,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (pin_yin, 声调, 文本)
+);
+
+
+CREATE TABLE 用户_c1_词典2 (
+  pin_yin TEXT NOT NULL,
+  文本 TEXT NOT NULL,
+  之前 TEXT NOT NULL,
+  次数 INT NOT NULL DEFAULT 0,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (pin_yin, 文本, 之前)
+);
+
 
 COMMIT;
 
--- ANALYZE;
--- .selftest --init
--- VACUUM;
+-- 清理
+ANALYZE;
+VACUUM;
