@@ -9,7 +9,7 @@
 
 BEGIN TRANSACTION;
 
-
+-- ####
 CREATE TABLE a_pinyin (  -- A拼音元数据, 与 1.x 版本兼容
   name TEXT PRIMARY KEY UNIQUE NOT NULL,
   value TEXT,
@@ -26,7 +26,7 @@ INSERT INTO a_pinyin(name, value, `desc`) VALUES
   ("data_version", "0.1.0", "本数据库中数据的版本"),
   ("last_update", strftime("%Y-%m-%dT%H:%M:%fZ", "now"), "最后更新时间");
 
-
+-- ####
 CREATE TABLE a_pinyin_元数据 (  -- A拼音 2.0 数据库元数据
   类型 TEXT NOT NULL,
   名称 TEXT NOT NULL,
@@ -53,9 +53,7 @@ INSERT INTO a_pinyin_元数据(类型, 名称, 值, 描述, 备注) VALUES
   ("枚举", "a_pinyin_元数据.类型", "表", "对数据库中每张表的描述", NULL),
   ("枚举", "a_pinyin_元数据.类型", "枚举", "对某表某列枚举值的描述", NULL);
 
--- TODO create INDEX
-
-
+-- ####
 CREATE TABLE 用户_配置 (
   键 TEXT NOT NULL,
   值 TEXT,
@@ -66,7 +64,7 @@ CREATE TABLE 用户_配置 (
   PRIMARY KEY (键)
 );
 
-
+-- ####
 CREATE TABLE 用户_字符 (
   类型 TEXT NOT NULL,
   文本 TEXT NOT NULL,
@@ -74,9 +72,15 @@ CREATE TABLE 用户_字符 (
   时间 REAL NOT NULL DEFAULT 0,
 
   PRIMARY KEY (类型, 文本)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_用户_字符_次数
+ON 用户_字符(次数);
 
+CREATE INDEX i_用户_字符_时间
+ON 用户_字符(时间);
+
+-- ####
 CREATE TABLE 用户_拼音 (
   类型 TEXT NOT NULL,
   文本 TEXT NOT NULL,
@@ -84,9 +88,15 @@ CREATE TABLE 用户_拼音 (
   时间 REAL NOT NULL DEFAULT 0,
 
   PRIMARY KEY (文本)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_用户_拼音_次数
+ON 用户_拼音(次数);
 
+CREATE INDEX i_用户_拼音_时间
+ON 用户_拼音(时间);
+
+-- ####
 CREATE TABLE 用户_c1_双拼 (
   名称 TEXT NOT NULL,
   双拼 TEXT NOT NULL,
@@ -95,9 +105,15 @@ CREATE TABLE 用户_c1_双拼 (
   时间 REAL NOT NULL DEFAULT 0,
 
   PRIMARY KEY (名称, 双拼, pin_yin)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_用户_c1_双拼_次数
+ON 用户_c1_双拼(次数);
 
+CREATE INDEX i_用户_c1_双拼_时间
+ON 用户_c1_双拼(时间);
+
+-- ####
 CREATE TABLE 用户_汉字 (
   全拼 TEXT NOT NULL,
   声母 TEXT NOT NULL,
@@ -107,9 +123,18 @@ CREATE TABLE 用户_汉字 (
   时间 REAL NOT NULL DEFAULT 0,
 
   PRIMARY KEY (全拼, 汉字, 声调)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_用户_汉字_声母
+ON 用户_汉字(声母);
 
+CREATE INDEX i_用户_汉字_次数
+ON 用户_汉字(次数);
+
+CREATE INDEX i_用户_汉字_时间
+ON 用户_汉字(时间);
+
+-- ####
 CREATE TABLE 用户_c1_拼音切分 (
   模式 TEXT NOT NULL,
   原始 TEXT NOT NULL,
@@ -118,9 +143,15 @@ CREATE TABLE 用户_c1_拼音切分 (
   时间 REAL NOT NULL DEFAULT 0,
 
   PRIMARY KEY (模式, 原始, pin_yin)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_用户_c1_拼音切分_次数
+ON 用户_c1_拼音切分(次数);
 
+CREATE INDEX i_用户_c1_拼音切分_时间
+ON 用户_c1_拼音切分(时间);
+
+-- ####
 CREATE TABLE 用户_c1_词典 (
   pin_yin TEXT NOT NULL,
   声调 TEXT,
@@ -129,9 +160,15 @@ CREATE TABLE 用户_c1_词典 (
   时间 REAL NOT NULL DEFAULT 0,
 
   PRIMARY KEY (pin_yin, 声调, 文本)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_用户_c1_词典_次数
+ON 用户_c1_词典(次数);
 
+CREATE INDEX i_用户_c1_词典_时间
+ON 用户_c1_词典(时间);
+
+-- ####
 CREATE TABLE 用户_c1_词典2 (
   pin_yin TEXT NOT NULL,
   文本 TEXT NOT NULL,
@@ -140,9 +177,15 @@ CREATE TABLE 用户_c1_词典2 (
   时间 REAL NOT NULL DEFAULT 0,
 
   PRIMARY KEY (pin_yin, 文本, 之前)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_用户_c1_词典2_次数
+ON 用户_c1_词典2(次数);
 
+CREATE INDEX i_用户_c1_词典2_时间
+ON 用户_c1_词典2(时间);
+
+-- ####
 COMMIT;
 
 -- 清理

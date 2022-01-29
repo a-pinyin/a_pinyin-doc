@@ -9,7 +9,7 @@
 
 BEGIN TRANSACTION;
 
-
+-- ####
 CREATE TABLE a_pinyin (  -- A拼音元数据, 与 1.x 版本兼容
   name TEXT PRIMARY KEY UNIQUE NOT NULL,
   value TEXT,
@@ -26,7 +26,7 @@ INSERT INTO a_pinyin(name, value, `desc`) VALUES
   ("data_version", "0.1.0", "本数据库中数据的版本"),
   ("last_update", strftime("%Y-%m-%dT%H:%M:%fZ", "now"), "最后更新时间");
 
-
+-- ####
 CREATE TABLE a_pinyin_元数据 (  -- A拼音 2.0 数据库元数据
   类型 TEXT NOT NULL,
   名称 TEXT NOT NULL,
@@ -62,36 +62,37 @@ INSERT INTO a_pinyin_元数据(类型, 名称, 值, 描述, 备注) VALUES
   ("枚举", "基础_拼音.类型", "声母", "", NULL),
   ("枚举", "基础_拼音.类型", "韵母", "", NULL);
 
--- TODO create INDEX
-
-
+-- ####
 CREATE TABLE 固定_字符 (
   类型 TEXT NOT NULL,
   文本 TEXT NOT NULL,
   次数 INT NOT NULL DEFAULT 0,
 
   PRIMARY KEY (类型, 文本)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_固定_字符_次数
+ON 固定_字符(次数);
 
+-- ####
 CREATE TABLE 基础_拼音 (
   类型 TEXT NOT NULL,
   文本 TEXT NOT NULL,
   次数 INT NOT NULL DEFAULT 0,
 
   PRIMARY KEY (文本)
-);
+) WITHOUT ROWID;
 
-
+-- ####
 CREATE TABLE c1_双拼 (
   名称 TEXT NOT NULL,
   双拼 TEXT NOT NULL,
   pin_yin TEXT NOT NULL,
 
   PRIMARY KEY (名称, 双拼, pin_yin)
-);
+) WITHOUT ROWID;
 
-
+-- ####
 CREATE TABLE 基础_汉字 (
   全拼 TEXT NOT NULL,
   声母 TEXT NOT NULL,
@@ -100,27 +101,42 @@ CREATE TABLE 基础_汉字 (
   次数 INT NOT NULL DEFAULT 0,
 
   PRIMARY KEY (全拼, 汉字, 声调)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_基础_汉字_声母
+ON 基础_汉字(声母);
 
+CREATE INDEX i_基础_汉字_次数
+ON 基础_汉字(次数);
+
+-- ####
 CREATE TABLE c1_词典 (
   文本 TEXT NOT NULL,
   次数 INT NOT NULL DEFAULT 0,
   前缀2 TEXT NOT NULL,
 
   PRIMARY KEY (文本)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_c1_词典_次数
+ON c1_词典(次数);
 
+CREATE INDEX i_c1_词典_前缀2
+ON c1_词典(前缀2);
+
+-- ####
 CREATE TABLE c1_词典拼音 (
   pin_yin TEXT NOT NULL,
   p_y TEXT NOT NULL,
   前缀2 TEXT NOT NULL,
 
   PRIMARY KEY (pin_yin, 前缀2)
-);
+) WITHOUT ROWID;
 
+CREATE INDEX i_c1_词典拼音_py
+ON c1_词典拼音(p_y);
 
+-- ####
 CREATE TABLE 默认配置 (
   键 TEXT NOT NULL,
   值 TEXT,
@@ -130,7 +146,7 @@ CREATE TABLE 默认配置 (
   PRIMARY KEY (键)
 );
 
-
+-- ####
 COMMIT;
 
 -- 清理
