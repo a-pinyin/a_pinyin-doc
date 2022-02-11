@@ -8,6 +8,12 @@ A 拼音 Android 应用
 
 - 内置数据库安装文件: `a_pinyin-2.zip`
 
+- 数据库存放路径:
+  `/storage/emulated/0/Android/data/org.fm_elpac.a_pinyin.ui/files/db/`
+
+- 日志存放路径:
+  `/storage/emulated/0/Android/data/org.fm_elpac.a_pinyin.ui/files/log/`
+
 ## 功能列表
 
 - Android 输入法系统集成
