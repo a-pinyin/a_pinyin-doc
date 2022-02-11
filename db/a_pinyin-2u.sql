@@ -43,12 +43,18 @@ INSERT INTO a_pinyin_元数据(类型, 名称, 值, 描述, 备注) VALUES
   ("表", "a_pinyin_元数据", NULL, "A拼音 2.0 数据库元数据", NULL),
   ("表", "用户_配置", NULL, "保存设置表", NULL),
   ("表", "用户_字符", NULL, "对应 固定_字符", NULL),
+  ("表", "用户_字符_索引", NULL, "自定义输入的集合索引", NULL),
   ("表", "用户_拼音", NULL, "对应 基础_拼音", NULL),
   ("表", "用户_汉字", NULL, "对应 基础_汉字", NULL),
   ("表", "用户_c1_双拼", NULL, "对应 c1_双拼", NULL),
   ("表", "用户_c1_拼音切分", NULL, "记录拼音切分选择结果", NULL),
   ("表", "用户_c1_词典", NULL, "用户输入 1 元词典", NULL),
   ("表", "用户_c1_词典2", NULL, "用户输入 2 元词典", NULL),
+
+  ("表", "用户_设备", NULL, "用于 多设备同步", NULL),
+  ("表", "用户_剪切板", NULL, "用于 剪切板管理器", NULL),
+  ("表", "用户_剪切板_标签", NULL, "用于标签化管理剪切板条目", NULL),
+  ("表", "用户_输入统计", NULL, "用于 输入统计功能", NULL),
 
   ("枚举", "a_pinyin_元数据.类型", "表", "对数据库中每张表的描述", NULL),
   ("枚举", "a_pinyin_元数据.类型", "枚举", "对某表某列枚举值的描述", NULL);
@@ -79,6 +85,16 @@ ON 用户_字符(次数);
 
 CREATE INDEX i_用户_字符_时间
 ON 用户_字符(时间);
+
+-- ####
+CREATE TABLE 用户_字符_索引 (
+  类型 TEXT NOT NULL,
+  名称 TEXT NOT NULL,
+  描述 TEXT,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (类型)
+);
 
 -- ####
 CREATE TABLE 用户_拼音 (
@@ -184,6 +200,52 @@ ON 用户_c1_词典2(次数);
 
 CREATE INDEX i_用户_c1_词典2_时间
 ON 用户_c1_词典2(时间);
+
+-- ####
+CREATE TABLE 用户_设备 (
+  序号 INT NOT NULL,
+  UUID TEXT UNIQUE,
+  名称 TEXT NOT NULL,
+  备注 TEXT,
+  设备信息 TEXT,
+  时间 REAL NOT NULL DEFAULT 0,
+  添加时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (序号)
+);
+
+-- ####
+CREATE TABLE 用户_剪切板 (
+  序号 INT NOT NULL,
+  文本 TEXT NOT NULL,
+  时间 REAL NOT NULL DEFAULT 0,
+  备注 TEXT,
+
+  PRIMARY KEY (序号)
+);
+
+CREATE INDEX i_用户_剪切板_时间
+ON 用户_剪切板(时间);
+
+-- ####
+CREATE TABLE 用户_剪切板_标签 (
+  -- 序号为 0 的标签并不对应实际剪切板条目
+  序号 INT NOT NULL DEFAULT 0,
+  标签 TEXT NOT NULL,
+  时间 REAL NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (序号, 标签)
+);
+
+-- ####
+CREATE TABLE 用户_输入统计 (
+  键 TEXT NOT NULL,
+  值 INT NOT NULL DEFAULT 0,
+  时间 REAL NOT NULL DEFAULT 0,
+  备注 TEXT,
+
+  PRIMARY KEY (键)
+);
 
 -- ####
 COMMIT;
