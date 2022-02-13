@@ -17,8 +17,8 @@ CREATE TABLE a_pinyin (  -- A拼音元数据, 与 1.x 版本兼容
 );
 
 INSERT INTO a_pinyin(name, value, `desc`) VALUES
-  ("a_pinyin version", "2.0.0-a1", "a_pinyin.apk 的版本"),
-  ("db_version", "2.0.0-a1", "数据库格式版本"),
+  ("a_pinyin version", "2.0.0-a2", "a_pinyin.apk 的版本"),
+  ("db_version", "2.0.0-a2", "数据库格式版本"),
   ("db_type", "2", "本数据库的类型: A拼音 2.0 内置数据库"),
   ("lang", "zh_CN", "语言: 简体中文  Language: Chinese"),
   ("url", "https://github.com/fm-elpac/a_pinyin", "本项目源代码地址"),
