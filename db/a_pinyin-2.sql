@@ -97,11 +97,15 @@ CREATE TABLE 基础_汉字 (
   全拼 TEXT NOT NULL,
   声母 TEXT NOT NULL,
   汉字 TEXT NOT NULL,
+  分级 INT NOT NULL,
   声调 INT NOT NULL DEFAULT 0,
   次数 INT NOT NULL DEFAULT 0,
 
   PRIMARY KEY (全拼, 汉字, 声调)
 ) WITHOUT ROWID;
+
+CREATE INDEX i_基础_汉字_分级
+ON 基础_汉字(分级);
 
 CREATE INDEX i_基础_汉字_声母
 ON 基础_汉字(声母);
