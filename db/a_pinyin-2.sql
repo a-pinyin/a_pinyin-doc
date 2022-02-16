@@ -47,7 +47,9 @@ INSERT INTO a_pinyin_元数据(类型, 名称, 值, 描述, 备注) VALUES
   ("表", "c1_双拼", NULL, "内置双拼方案", NULL),
   ("表", "c1_词典", NULL, "内置 1 元词典", NULL),
   ("表", "c1_词典拼音", NULL, "用于 前缀2 查找", NULL),
+  ("表", "c1_数据", NULL, "核心模块的大量整块数据, 比如 HMM 模型", NULL),
   ("表", "默认配置", NULL, "核心模块等配置参数的默认值", NULL),
+  ("表", "wasm", NULL, "用于分发 wasm 二进制模块", NULL),
 
   ("枚举", "a_pinyin_元数据.类型", "表", "对数据库中每张表的描述", NULL),
   ("枚举", "a_pinyin_元数据.类型", "枚举", "对某表某列枚举值的描述", NULL),
@@ -60,7 +62,9 @@ INSERT INTO a_pinyin_元数据(类型, 名称, 值, 描述, 备注) VALUES
   ("枚举", "固定_字符.类型", "自定义1", "内置自定义输入", NULL),
   ("枚举", "基础_拼音.类型", "全拼", "单个拼音不带声调", NULL),
   ("枚举", "基础_拼音.类型", "声母", "", NULL),
-  ("枚举", "基础_拼音.类型", "韵母", "", NULL);
+  ("枚举", "基础_拼音.类型", "韵母", "", NULL),
+  ("枚举", "wasm.wasi", "0", "wasm32-unknown-unknown", NULL),
+  ("枚举", "wasm.wasi", "1", "wasm32-wasi", NULL);
 
 -- ####
 CREATE TABLE 固定_字符 (
@@ -141,6 +145,17 @@ CREATE INDEX i_c1_词典拼音_py
 ON c1_词典拼音(p_y);
 
 -- ####
+CREATE TABLE c1_数据 (
+  名称 TEXT NOT NULL,
+  版本 TEXT NOT NULL,
+  数据 BLOB NOT NULL,
+  格式 TEXT NOT NULL,
+  备注 TEXT,
+
+  PRIMARY KEY (名称)
+);
+
+-- ####
 CREATE TABLE 默认配置 (
   键 TEXT NOT NULL,
   值 TEXT,
@@ -148,6 +163,17 @@ CREATE TABLE 默认配置 (
   备注 TEXT,
 
   PRIMARY KEY (键)
+);
+
+-- ####
+CREATE TABLE wasm (
+  名称 TEXT NOT NULL,
+  版本 TEXT NOT NULL,
+  wasm BLOB NOT NULL,
+  wasi INT NOT NULL DEFAULT 0,
+  备注 TEXT,
+
+  PRIMARY KEY (名称)
 );
 
 -- ####
